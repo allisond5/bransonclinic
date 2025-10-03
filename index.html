@@ -1,16 +1,17 @@
+
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Symptom & Lifestyle Journal — Clinic Edition (Full)</title>
+  <title>Branson Clinic — Symptom & Lifestyle Journal</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#ffffff">
   <style>
     :root{ --bg:#f7f7fb; --fg:#111; --muted:#6b6b6b; --card:#fff; --border:#e6e6ef; --accent:#2f6fed; --accent-ghost:#e8efff; --danger:#d23d3d }
     *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif}
     header{position:sticky;top:0;background:var(--card);border-bottom:1px solid var(--border);padding:12px 16px;z-index:10;display:flex;align-items:center;gap:12px}
-    header .logo{width:32px;height:32px;border:1px dashed var(--border);border-radius:4px;display:inline-block;background:#fafafa}
+    header .logo{width:40px;height:40px;border-radius:6px;display:inline-block;background:#fafafa;overflow:hidden;border:1px solid var(--border)}
     header h1{margin:0;font-size:18px} header small{color:var(--muted)}
     main{max-width:1040px;margin:0 auto;padding:16px}
     .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px}
@@ -22,7 +23,6 @@
     .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
     .btn{appearance:none;border:1px solid var(--border);background:#fff;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
     .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
-    .btn-ghost{background:var(--accent-ghost);border-color:transparent;color:#214ec7}
     .btn-danger{background:#fff;border-color:var(--danger);color:#d23d3d}
     .muted{color:var(--muted)}
     table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid var(--border);text-align:left;font-size:13px;vertical-align:top}
@@ -30,47 +30,36 @@
     .pill{display:inline-block;padding:2px 8px;border-radius:999px;background:var(--accent-ghost);color:#214ec7;font-size:12px}
     .token{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:999px;margin:2px 4px 0 0;font-size:12px}
     .footer{font-size:12px;color:var(--muted);text-align:center;padding:16px}
-    details summary{cursor:pointer}
   </style>
 </head>
 <body>
   <header>
-    <div class="logo" title="Your clinic logo here"></div>
+    <div class="logo"><img src="assets/BCLogo.png" alt="Branson Clinic Logo" style="width:100%;height:100%;object-fit:contain"></div>
     <div>
-      <h1>Symptom & Lifestyle Journal — Clinic Edition</h1>
-      <small class="muted">Diet · Lifestyle · Symptoms · Meds/Supps · Scales</small>
+      <h1>Branson Clinic — Symptom & Lifestyle Journal</h1>
+      <small class="muted">Phone/Text: 417-239-0125</small>
     </div>
   </header>
   <main>
     <section class="card">
       <div class="row" style="justify-content:space-between">
-        <div><span class="pill" id="status-pill">Local only</span></div>
+        <div><span class="pill" id="status-pill">Local entry (no cloud sync)</span></div>
         <div class="row">
-          <button class="btn btn-ghost" id="installBtn" style="display:none">Install App</button>
           <button class="btn" id="exportDaysBtn">Export days.csv</button>
           <button class="btn" id="exportSymptomsBtn">Export symptoms.csv</button>
           <button class="btn" id="exportScalesBtn">Export scales.csv</button>
-          <button class="btn" id="syncBtn">Sync to Clinic</button>
           <button class="btn btn-danger" id="clearLocalBtn">Clear Local Data</button>
         </div>
       </div>
-      <p class="muted" style="margin-top:8px">Data stays on this device unless you sync to your clinic. Use de-identified codes (no names/MRNs).</p>
-      <details style="margin-top:6px">
-        <summary><strong>Consent & Privacy (placeholder text)</strong></summary>
-        <p class="muted">
-          By tapping “Sync to Clinic,” I consent to share my entries (diet, lifestyle, symptoms, medications, supplements, and scales)
-          with my clinician. This app is informational and not a substitute for medical care or emergencies. I understand that
-          entries are stored locally on my device until I choose to sync. I can delete local entries at any time.
-        </p>
-      </details>
+      <p class="muted" style="margin-top:8px">Data stays only on this device. Use your De‑ID code from Branson Clinic.</p>
     </section>
 
     <section class="card">
       <h3>Daily Lifestyle</h3>
       <div class="grid grid-3">
         <div><label for="date">Date</label><input type="date" id="date"></div>
-        <div><label for="consent">Consent to share</label><select id="consent"><option value="no">No</option><option value="yes">Yes</option></select></div>
-        <div><label for="webhook">Clinic Webhook (https)</label><input type="url" id="webhook" placeholder="https://your-n8n/webhook/xyz"></div>
+        <div><label for="consent">Consent to share CSVs with clinic</label><select id="consent"><option value="no">No</option><option value="yes">Yes</option></select></div>
+        <div><label for="export_id">Your Clinic Code</label><input type="text" id="export_id" placeholder="ABC123"></div>
       </div>
       <div class="grid grid-2" style="margin-top:8px">
         <div><label for="meals">Diet (type naturally)</label><textarea id="meals" placeholder="e.g., Fairlife strawberry milk 14oz; Taco Bell nachos; aged cheese; red wine. "></textarea></div>
@@ -133,8 +122,7 @@
       </div>
     </section>
 
-    <section class="card">
-      <h3>Quick Micro-Scales</h3>
+    <section class="card"><h3>Quick Micro-Scales</h3>
       <details>
         <summary>PSS-4 (weekly)</summary>
         <div class="grid grid-2" style="margin-top:8px">
@@ -168,161 +156,26 @@
       <h3>Your Days</h3>
       <div id="entries"></div>
     </section>
-
-    <section class="card">
-      <h3>Clinician Settings</h3>
-      <div class="grid grid-3">
-        <div><label for="clinic_name">Clinic Name</label><input type="text" id="clinic_name" placeholder="Your Clinic Name (placeholder)"></div>
-        <div><label for="min_days">Min days to analyze</label><input type="number" id="min_days" value="7" min="1"></div>
-        <div><label for="export_id">De-ID Patient Code</label><input type="text" id="export_id" placeholder="ABC123"></div>
-      </div>
-      <p class="muted">Saved locally and included in exports/sync payloads.</p>
-    </section>
   </main>
-  <div class="footer">Informational tool only. Not for emergencies or diagnosis.</div>
+  <div class="footer">Branson Clinic • Phone/Text: 417-239-0125 • Informational tool only. Not for emergencies or diagnosis.</div>
 
   <script>
-    let deferredPrompt; const installBtn=document.getElementById('installBtn');
-    window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;installBtn.style.display='inline-block';});
-    installBtn?.addEventListener('click', async ()=>{ if(!deferredPrompt)return; deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; installBtn.style.display='none'; });
-
-    const dayKey='ce.days.full.v1'; const symptomKey='ce.symptoms.v1'; const scalesKey='ce.scales.v1'; const settingsKey='ce.settings.v1';
-    const $=id=>document.getElementById(id); const statusPill=$('status-pill');
+    const dayKey='bc.days.v1'; const symptomKey='bc.symptoms.v1'; const scalesKey='bc.scales.v1';
+    const $=id=>document.getElementById(id);
+    let todaySymptoms=[];
     function load(key){ try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e){return[]} }
     function save(key,val){ localStorage.setItem(key, JSON.stringify(val)) }
-    function loadSettings(){ try{return JSON.parse(localStorage.getItem(settingsKey)||'{}')}catch(e){return{}} }
-    function saveSettings(s){ localStorage.setItem(settingsKey, JSON.stringify(s)) }
-    function settingsFromUI(){ const s={clinic_name:$('clinic_name').value.trim(),min_days:Number($('min_days').value||7),export_id:$('export_id').value.trim()}; saveSettings(s); return s; }
-    function applySettings(){ const s=loadSettings(); if(s.clinic_name)$('clinic_name').value=s.clinic_name; if(s.min_days)$('min_days').value=s.min_days; if(s.export_id)$('export_id').value=s.export_id; }
-
-    function any(t, arr){ return arr.some(w=>t.includes(w)) }
-
-    function tagDiet(text){
-      const t=(text||'').toLowerCase(); const tags=new Set();
-      if(any(t,['fairlife','milk','cheese','yogurt','ice cream','kefir','aged'])) tags.add('dairy');
-      if(any(t,['aged cheese','blue cheese','gouda','parmesan'])) tags.add('aged_cheese');
-      if(any(t,['wine','red wine','white wine','beer','vodka','whiskey','alcohol'])) tags.add('alcohol');
-      if(any(t,['taco bell','mcdonald','kfc','burger king','wendy','popeyes','domino','pizza hut','chipotle','subway'])) tags.add('fast_food');
-      if(any(t,['fried','fries','breaded'])) tags.add('fried');
-      if(any(t,['spicy','jalapeno','hot sauce','chili'])) tags.add('spicy');
-      if(any(t,['chocolate','cocoa'])) tags.add('chocolate');
-      if(any(t,['nitrate','nitrite','deli','bacon','salami','pepperoni','hot dog'])) tags.add('processed_meat');
-      if(any(t,['aspartame','acesulfame','sucralose','diet soda','stevia'])) tags.add('artificial_sweetener');
-      if(any(t,['soda','cola','energy drink','monster','red bull','sweet tea'])) tags.add('sugary_drink');
-      if(any(t,['nacho','chips','candy','cookie','ultra-processed','ultra processed','packaged'])) tags.add('ultra_processed');
-      if(any(t,['coffee','espresso','latte','cappuccino','red bull','energy'])) tags.add('caffeine');
-      if(any(t,['bread','pasta','wheat','cracker','flour','gluten'])) tags.add('gluten');
-      if(any(t,['vinegar','sauerkraut','kimchi','kombucha','yogurt'])) tags.add('fermented');
-      return Array.from(tags);
-    }
-    function tagMeds(text){
-      const t=(text||'').toLowerCase(); const tags=new Set();
-      const add=(words,label)=>{ if(words.some(w=>t.includes(w))) tags.add(label); };
-      add(['ibuprofen','advil','motrin','naproxen','aleve','diclofenac','meloxicam'],'med_nsaid');
-      add(['acetaminophen','paracetamol','tylenol','apap'],'med_acetaminophen');
-      add(['sumatriptan','rizatriptan','zolmitriptan','eletriptan','frovatriptan'],'med_triptan');
-      add(['ubrogepant','rimegepant','atogepant'],'med_gepant');
-      add(['erenumab','galcanezumab','fremanezumab','eptinezumab'],'med_cgrp_mab');
-      add(['propranolol','metoprolol','atenolol'],'med_beta_blocker');
-      add(['amitriptyline','nortriptyline'],'med_tca');
-      add(['topiramate','valproate','divalproex'],'med_antiepileptic');
-      add(['sertraline','fluoxetine','escitalopram','citalopram'],'med_ssri');
-      add(['venlafaxine','duloxetine'],'med_snri');
-      add(['tizanidine','cyclobenzaprine','baclofen','methocarbamol'],'med_muscle_relaxant');
-      add(['cetirizine','zyrtec','loratadine','claritin','fexofenadine','allegra','diphenhydramine','benadryl'],'med_antihistamine');
-      add(['pseudoephedrine','phenylephrine'],'med_decongestant');
-      add(['caffeine','excedrin'],'med_caffeine');
-      add(['ondansetron','zofran','metoclopramide','reglan'],'med_antiemetic');
-      return Array.from(tags);
-    }
-    function tagSupps(text){
-      const t=(text||'').toLowerCase(); const tags=new Set();
-      const add=(words,label)=>{ if(words.some(w=>t.includes(w))) tags.add(label); };
-      add(['magnesium'],'supp_magnesium');
-      add(['riboflavin','b2'],'supp_riboflavin');
-      add(['coq10','co-enzyme q10','coenzyme q10'],'supp_coq10');
-      add(['omega-3','fish oil','epa','dha'],'supp_omega3');
-      add(['melatonin'],'supp_melatonin');
-      add(['creatine'],'supp_creatine');
-      add(['turmeric','curcumin'],'supp_curcumin');
-      add(['ashwagandha'],'supp_ashwagandha');
-      return Array.from(tags);
-    }
-    function parseDose(text){
-      if(!text) return {val:null, unit:''};
-      const m = text.toLowerCase().match(/(\d+(?:\.\d+)?)\s*(mg|g|mcg|iu|capsules?|tabs?|tablets?)/);
-      if(m){ return {val: parseFloat(m[1]), unit: m[2]} }
-      return {val:null, unit:''};
-    }
-    function computeSleepScore(d){
-      let score=100; const h=parseFloat(d.sleep_hours||''); const q=parseInt(d.sleep_quality||'');
-      if(!isNaN(h)){ if(h<7) score-=10; else if(h>=7 && h<7.5) score-=5; else if(h>9.5) score-=10; }
-      if(!isNaN(q)){ if(q<=2) score-=10; else if(q===3) score-=5; }
-      const days=(JSON.parse(localStorage.getItem('ce.days.full.v1')||'[]')).slice(-7);
-      function timeToMin(x){ if(!x) return null; const [hh,mm]=x.split(':').map(n=>parseInt(n,10)); return hh*60+(mm||0); }
-      const btmins=days.map(x=>timeToMin(x.bedtime)).filter(v=>v!==null); const curbt=timeToMin(d.bedtime);
-      if(curbt!=null && btmins.length>=3){ const sorted=btmins.slice().sort((a,b)=>a-b); const med=sorted[Math.floor(sorted.length/2)]; const diff=Math.abs(curbt-med); if(diff>90) score-=8; else if(diff>=60) score-=4; }
-      const caf=parseInt(d.caff_after_2pm||'0'); if(!isNaN(caf)){ if(caf>=2) score-=10; else if(caf>=1) score-=6; }
-      if((d.late_meal||'').toLowerCase()==='yes') score-=6;
-      const scr=parseFloat(d.screen_evening||''); if(!isNaN(scr)){ if(scr>1) score-=4; }
-      if(score<0) score=0; if(score>100) score=100; return score;
-    }
-    let todaySymptoms=[];
-    function renderTokens(){
-      const box=document.getElementById('symptomTokens'); box.innerHTML='';
-      if(todaySymptoms.length===0){ box.innerHTML='<span class="muted">No symptoms added yet for this day.</span>'; return; }
-      todaySymptoms.forEach((s,idx)=>{
-        const el=document.createElement('span'); el.className='token'; el.textContent=`${s.name} • sev ${s.severity||0}/10 • ${s.duration||0}h`;
-        el.title=(s.tags?('Tags: '+s.tags):'')+(s.notes?(' | '+s.notes):'');
-        el.onclick=()=>{ todaySymptoms.splice(idx,1); renderTokens(); };
-        box.appendChild(el);
-      });
-    }
-    function resetDayForm(){
-      ['meals','notes','medications_text','supplements_text','medications_time','supplements_time','activity_minutes','steps','intensity','hydration_liters','sleep_hours','sleep_quality','bedtime','waketime','stress','mood','caff_after_2pm','late_meal','screen_evening','rhr','hrv','menstrual_phase'].forEach(id=>{ const el=document.getElementById(id); if(!el) return; if(el.tagName==='SELECT') el.value=''; else el.value=''; });
-      todaySymptoms=[]; renderTokens();
-    }
-    function saveDay(){
-      const date=$('date').value; if(!date){ alert('Choose a date.'); return; }
-      const settings = loadSettings();
-      const meals = $('meals').value.trim();
-      const meds = $('medications_text').value.trim();
-      const supps = $('supplements_text').value.trim();
-      const dose = parseDose(meds);
-      const day = {
-        date, consent:$('consent').value, webhook:$('webhook').value.trim(),
-        meals, notes:$('notes').value.trim(),
-        medications_text: meds, supplements_text: supps,
-        medications_time: $('medications_time').value, supplements_time: $('supplements_time').value,
-        activity_minutes:$('activity_minutes').value, steps:$('steps').value, intensity:$('intensity').value, hydration_liters:$('hydration_liters').value,
-        sleep_hours:$('sleep_hours').value, sleep_quality:$('sleep_quality').value, bedtime:$('bedtime').value, waketime:$('waketime').value,
-        stress:$('stress').value, mood:$('mood').value, caff_after_2pm:$('caff_after_2pm').value, late_meal:$('late_meal').value, screen_evening:$('screen_evening').value,
-        rhr:$('rhr').value, hrv:$('hrv').value, menstrual_phase:$('menstrual_phase').value,
-        diet_tags: tagDiet(meals).join('|'),
-        med_tags: tagMeds(meds).join('|'),
-        supp_tags: tagSupps(supps).join('|'),
-        med_dose_val: dose.val, med_dose_unit: dose.unit,
-        sleep_score: 0,
-        settings, created_at:new Date().toISOString()
-      };
-      day.sleep_score = computeSleepScore(day);
-      const days = load(dayKey).filter(d=>d.date!==date); days.push(day); save(dayKey, days);
-      const syms = load(symptomKey).filter(s=>s.date!==date);
-      todaySymptoms.forEach(s=>{ syms.push({ date, export_id: settings?.export_id||'', name:s.name, severity:s.severity, duration:s.duration, tags:s.tags, notes:s.notes, created_at:new Date().toISOString() }); });
-      save(symptomKey, syms);
-      renderEntries(); resetDayForm();
-    }
-    function renderEntries(){
-      const days = load(dayKey).sort((a,b)=>(a.date||'').localeCompare(b.date));
-      const syms = load(symptomKey);
-      const div=document.getElementById('entries');
-      if(days.length===0){ div.innerHTML='<p class="muted">No days saved yet.</p>'; return; }
-      let html='<table><thead><tr><th>Date</th><th>Lifestyle</th><th>Meds/Supps</th><th>Sleep/Score</th><th>Symptoms</th><th>Tags</th><th></th></tr></thead><tbody>';
-      for(const d of days){
-        const symForDay = syms.filter(s=>s.date===d.date);
-        const symStr = symForDay.length ? symForDay.map(s=>`${s.name} (${s.severity||''}/10, ${s.duration||0}h)`).join(', ') : '—';
-        html += `<tr>
-          <td><div>${d.date}</div><div class="muted" style="font-size:11px">${d.settings?.export_id||''}</div></td>
+    function renderTokens(){ const box=$('symptomTokens'); box.innerHTML=''; if(todaySymptoms.length===0){ box.innerHTML='<span class="muted">No symptoms added yet for this day.</span>'; return; } todaySymptoms.forEach((s,idx)=>{ const el=document.createElement('span'); el.className='token'; el.textContent=`${s.name} • sev ${s.severity||0}/10 • ${s.duration||0}h`; el.title=(s.tags?('Tags: '+s.tags):'')+(s.notes?(' | '+s.notes):''); el.onclick=()=>{ todaySymptoms.splice(idx,1); renderTokens(); }; box.appendChild(el); }); }
+    function resetDayForm(){ ['meals','notes','medications_text','supplements_text','medications_time','supplements_time','activity_minutes','steps','intensity','hydration_liters','sleep_hours','sleep_quality','bedtime','waketime','stress','mood','caff_after_2pm','late_meal','screen_evening','rhr','hrv','menstrual_phase'].forEach(id=>{ const el=$(id); if(!el) return; if(el.tagName==='SELECT') el.value=''; else el.value=''; }); todaySymptoms=[]; renderTokens(); }
+    function tagDiet(text){ const t=(text||'').toLowerCase(); const tags=new Set(); const any=(arr)=>arr.some(w=>t.includes(w)); if(any(['fairlife','milk','cheese','yogurt','kefir','aged'])) tags.add('dairy'); if(any(['aged cheese','blue cheese','gouda','parmesan'])) tags.add('aged_cheese'); if(any(['wine','beer','alcohol'])) tags.add('alcohol'); if(any(['taco bell','mcdonald','kfc','burger king','wendy','popeyes','domino','pizza hut','chipotle','subway'])) tags.add('fast_food'); if(any(['fried','fries','breaded'])) tags.add('fried'); if(any(['spicy','jalapeno','hot sauce','chili'])) tags.add('spicy'); if(any(['chocolate','cocoa'])) tags.add('chocolate'); if(any(['nitrate','nitrite','deli','bacon','salami','pepperoni','hot dog'])) tags.add('processed_meat'); if(any(['aspartame','sucralose','diet soda','stevia'])) tags.add('artificial_sweetener'); if(any(['soda','cola','energy drink','monster','red bull','sweet tea'])) tags.add('sugary_drink'); if(any(['nacho','chips','candy','ultra-processed','ultra processed'])) tags.add('ultra_processed'); if(any(['coffee','espresso','latte','cappuccino','energy'])) tags.add('caffeine'); if(any(['bread','pasta','wheat','cracker','flour','gluten'])) tags.add('gluten'); if(any(['vinegar','sauerkraut','kimchi','kombucha','yogurt'])) tags.add('fermented'); return Array.from(tags); }
+    function tagMeds(text){ const t=(text||'').toLowerCase(); const tags=new Set(); const add=(words,label)=>{ if(words.some(w=>t.includes(w))) tags.add(label); }; add(['ibuprofen','naproxen','diclofenac','meloxicam'],'med_nsaid'); add(['acetaminophen','paracetamol','tylenol'],'med_acetaminophen'); add(['sumatriptan','rizatriptan','zolmitriptan','eletriptan','frovatriptan'],'med_triptan'); add(['ubrogepant','rimegepant','atogepant'],'med_gepant'); add(['erenumab','galcanezumab','fremanezumab','eptinezumab'],'med_cgrp_mab'); add(['propranolol','metoprolol','atenolol'],'med_beta_blocker'); add(['amitriptyline','nortriptyline'],'med_tca'); add(['topiramate','valproate','divalproex'],'med_antiepileptic'); add(['sertraline','fluoxetine','escitalopram','citalopram'],'med_ssri'); add(['venlafaxine','duloxetine'],'med_snri'); add(['tizanidine','cyclobenzaprine','baclofen','methocarbamol'],'med_muscle_relaxant'); add(['caffeine','excedrin'],'med_caffeine'); add(['ondansetron','zofran','metoclopramide','reglan'],'med_antiemetic'); return Array.from(tags); }
+    function tagSupps(text){ const t=(text||'').toLowerCase(); const tags=new Set(); const add=(words,label)=>{ if(words.some(w=>t.includes(w))) tags.add(label); }; add(['magnesium'],'supp_magnesium'); add(['riboflavin','b2'],'supp_riboflavin'); add(['coq10','co-enzyme q10','coenzyme q10'],'supp_coq10'); add(['omega-3','fish oil','epa','dha'],'supp_omega3'); add(['melatonin'],'supp_melatonin'); add(['creatine'],'supp_creatine'); add(['turmeric','curcumin'],'supp_curcumin'); add(['ashwagandha'],'supp_ashwagandha'); return Array.from(tags); }
+    function parseDose(text){ if(!text) return {val:null, unit:''}; const m = text.toLowerCase().match(/(\d+(?:\.\d+)?)\s*(mg|g|mcg|iu|capsules?|tabs?|tablets?)/); if(m){ return {val: parseFloat(m[1]), unit: m[2]} } return {val:null, unit:''}; }
+    function computeSleepScore(d){ let score=100; const h=parseFloat(d.sleep_hours||''); const q=parseInt(d.sleep_quality||''); if(!isNaN(h)){ if(h<7) score-=10; else if(h>=7 && h<7.5) score-=5; else if(h>9.5) score-=10; } if(!isNaN(q)){ if(q<=2) score-=10; else if(q===3) score-=5; } const caf=parseInt(d.caff_after_2pm||'0'); if(!isNaN(caf)){ if(caf>=2) score-=10; else if(caf>=1) score-=6; } if((d.late_meal||'').toLowerCase()==='yes') score-=6; const scr=parseFloat(d.screen_evening||''); if(!isNaN(scr)){ if(scr>1) score-=4; } if(score<0) score=0; if(score>100) score=100; return score; }
+    function addSymptom(){ const s={name:$('symptom_name').value.trim(), severity:$('symptom_severity').value, duration:$('symptom_duration').value, tags:$('symptom_tags').value.trim(), notes:$('symptom_notes').value.trim()}; if(!s.name){ alert('Enter a symptom name.'); return; } todaySymptoms.push(s); ['symptom_name','symptom_severity','symptom_duration','symptom_tags','symptom_notes'].forEach(id=>$(id).value=''); renderTokens(); }
+    function saveDay(){ const date=$('date').value; if(!date){ alert('Choose a date.'); return; } const meals=$('meals').value.trim(); const meds=$('medications_text').value.trim(); const supps=$('supplements_text').value.trim(); const dose=parseDose(meds); const day={ date, consent:$('consent').value, export_id:$('export_id').value.trim(), meals, notes:$('notes').value.trim(), medications_text:meds, supplements_text:supps, medications_time:$('medications_time').value, supplements_time:$('supplements_time').value, activity_minutes:$('activity_minutes').value, steps:$('steps').value, intensity:$('intensity').value, hydration_liters:$('hydration_liters').value, sleep_hours:$('sleep_hours').value, sleep_quality:$('sleep_quality').value, bedtime:$('bedtime').value, waketime:$('waketime').value, stress:$('stress').value, mood:$('mood').value, caff_after_2pm:$('caff_after_2pm').value, late_meal:$('late_meal').value, screen_evening:$('screen_evening').value, rhr:$('rhr').value, hrv:$('hrv').value, menstrual_phase:$('menstrual_phase').value, diet_tags:tagDiet(meals).join('|'), med_tags:tagMeds(meds).join('|'), supp_tags:tagSupps(supps).join('|'), med_dose_val:dose.val, med_dose_unit:dose.unit, sleep_score:0, created_at:new Date().toISOString() }; day.sleep_score=computeSleepScore(day); const days=load(dayKey).filter(d=>d.date!==date); days.push(day); save(dayKey, days); const syms=load(symptomKey).filter(s=>s.date!==date); todaySymptoms.forEach(s=>syms.push({ date, export_id: day.export_id, name:s.name, severity:s.severity, duration:s.duration, tags:s.tags, notes:s.notes, created_at:new Date().toISOString() })); save(symptomKey, syms); renderEntries(); resetDayForm(); }
+    function renderEntries(){ const days=load(dayKey).sort((a,b)=>(a.date||'').localeCompare(b.date)); const syms=load(symptomKey); const div=$('entries'); if(days.length===0){ div.innerHTML='<p class="muted">No days saved yet.</p>'; return; } let html='<table><thead><tr><th>Date</th><th>Lifestyle</th><th>Meds/Supps</th><th>Sleep/Score</th><th>Symptoms</th><th>Tags</th><th></th></tr></thead><tbody>'; for(const d of days){ const symForDay=syms.filter(s=>s.date===d.date); const symStr=symForDay.length? symForDay.map(s=>`${s.name} (${s.severity||''}/10, ${s.duration||0}h)`).join(', '):'—'; html += `<tr>
+          <td><div>${d.date}</div><div class="muted" style="font-size:11px">${d.export_id||''}</div></td>
           <td>${(d.meals||'').replace(/\n/g,'<br>')}<br><span class="muted">${d.activity_minutes||''}m • ${d.steps||''} steps • ${d.intensity||''} • H2O ${d.hydration_liters||''}L</span></td>
           <td><div><strong>Meds:</strong> ${(d.medications_text||'—').replace(/\n/g,'<br>')} <span class="muted">(${d.medications_time||'—'})</span></div>
               <div><strong>Supps:</strong> ${(d.supplements_text||'—').replace(/\n/g,'<br>')} <span class="muted">(${d.supplements_time||'—'})</span></div>
@@ -333,97 +186,13 @@
               <div><strong>Meds:</strong> ${(d.med_tags||'').replace(/\|/g, ', ')||'—'}</div>
               <div><strong>Supps:</strong> ${(d.supp_tags||'').replace(/\|/g, ', ')||'—'}</div></td>
           <td><button class="btn btn-danger" data-del="${d.date}">Delete</button></td>
-        </tr>`;
-      }
-      html+='</tbody></table>'; div.innerHTML=html;
-      div.querySelectorAll('button[data-del]').forEach(btn=>{
-        btn.addEventListener('click',()=>{
-          const date=btn.getAttribute('data-del');
-          save(dayKey, load(dayKey).filter(d=>d.date!==date));
-          save(symptomKey, load(symptomKey).filter(s=>s.date!==date));
-          renderEntries();
-        });
-      });
-    }
-    function saveScale(name, payload){
-      const arr = load(scalesKey);
-      const rec = { date: $('date').value, export_id: (loadSettings()?.export_id||''), name, payload, created_at:new Date().toISOString() };
-      arr.push(rec); save(scalesKey, arr); alert(name+' saved.');
-    }
-    document.addEventListener('click', (e)=>{
-      if(e.target && e.target.id==='savePSS4'){
-        const vals=[...document.querySelectorAll('.pss4')].map(x=>parseInt(x.value||'0')); const scored=[vals[0], 4-vals[1], 4-vals[2], vals[3]]; const total=scored.reduce((a,b)=>a+b,0); saveScale('PSS-4', {items: vals, total});
-      }
-      if(e.target && e.target.id==='savePHQ2'){
-        const vals=[...document.querySelectorAll('.phq2')].map(x=>parseInt(x.value||'0')); const total=vals.reduce((a,b)=>a+b,0); saveScale('PHQ-2', {items: vals, total});
-      }
-      if(e.target && e.target.id==='savePEG3'){
-        const vals=[...document.querySelectorAll('.peg3')].map(x=>parseInt(x.value||'0')); const mean = vals.filter(v=>!isNaN(v)).reduce((a,b)=>a+b,0) / (vals.filter(v=>!isNaN(v)).length||1); saveScale('PEG-3', {items: vals, mean});
-      }
-    });
-    function toCSVDays(){
-      const days=load(dayKey);
-      const headers=["date","consent","clinic_name","export_id","meals","notes","medications_text","supplements_text","medications_time","supplements_time","med_dose_val","med_dose_unit","activity_minutes","steps","intensity","hydration_liters","sleep_hours","sleep_quality","bedtime","waketime","stress","mood","caff_after_2pm","late_meal","screen_evening","rhr","hrv","menstrual_phase","diet_tags","med_tags","supp_tags","sleep_score","created_at"];
-      const out=[headers.join(",")];
-      for(const d of days){
-        const row=[d.date||"", d.consent||"", d.settings?.clinic_name||"", d.settings?.export_id||"", (d.meals||"").replace(/"/g,'""'), (d.notes||"").replace(/"/g,'""'), (d.medications_text||"").replace(/"/g,'""'), (d.supplements_text||"").replace(/"/g,'""'), d.medications_time||"", d.supplements_time||"", d.med_dose_val||"", d.med_dose_unit||"", d.activity_minutes||"", d.steps||"", d.intensity||"", d.hydration_liters||"", d.sleep_hours||"", d.sleep_quality||"", d.bedtime||"", d.waketime||"", d.stress||"", d.mood||"", d.caff_after_2pm||"", d.late_meal||"", d.screen_evening||"", d.rhr||"", d.hrv||"", d.menstrual_phase||"", d.diet_tags||"", d.med_tags||"", d.supp_tags||"", d.sleep_score||"", d.created_at||""];
-        out.push(row.map(v=>`"${String(v)}"`).join(","));
-      }
-      return out.join("\n");
-    }
-    function toCSVSymptoms(){
-      const syms=load(symptomKey);
-      const headers=["date","export_id","name","severity","duration","tags","notes","created_at"];
-      const out=[headers.join(",")];
-      for(const s of syms){
-        const row=[s.date||"", s.export_id||"", (s.name||"").replace(/"/g,'""'), s.severity||"", s.duration||"", (s.tags||"").replace(/"/g,'""'), (s.notes||"").replace(/"/g,'""'), s.created_at||""].map(v=>`"${String(v)}"`).join(",");
-        out.push(row);
-      }
-      return out.join("\n");
-    }
-    function toCSVScales(){
-      const arr=load(scalesKey);
-      const headers=["date","export_id","name","payload_json","created_at"];
-      const out=[headers.join(",")];
-      for(const r of arr){
-        const payload = JSON.stringify(r.payload||{}).replace(/"/g,'""');
-        const row=[r.date||"", r.export_id||"", r.name||"", payload, r.created_at||""].map(v=>`"${String(v)}"`).join(",");
-        out.push(row);
-      }
-      return out.join("\n");
-    }
+        </tr>`; } html+='</tbody></table>'; div.innerHTML=html; div.querySelectorAll('button[data-del]').forEach(btn=>{ btn.addEventListener('click',()=>{ const date=btn.getAttribute('data-del'); save(dayKey, load(dayKey).filter(d=>d.date!==date)); save(symptomKey, load(symptomKey).filter(s=>s.date!==date)); renderEntries(); }); }); }
+    function toCSVDays(){ const days=load(dayKey); const headers=["date","consent","export_id","meals","notes","medications_text","supplements_text","medications_time","supplements_time","med_dose_val","med_dose_unit","activity_minutes","steps","intensity","hydration_liters","sleep_hours","sleep_quality","bedtime","waketime","stress","mood","caff_after_2pm","late_meal","screen_evening","rhr","hrv","menstrual_phase","diet_tags","med_tags","supp_tags","sleep_score","created_at"]; const out=[headers.join(",")]; for(const d of days){ const row=[d.date||"", d.consent||"", d.export_id||"", (d.meals||"").replace(/"/g,'""'), (d.notes||"").replace(/"/g,'""'), (d.medications_text||"").replace(/"/g,'""'), (d.supplements_text||"").replace(/"/g,'""'), d.medications_time||"", d.supplements_time||"", d.med_dose_val||"", d.med_dose_unit||"", d.activity_minutes||"", d.steps||"", d.intensity||"", d.hydration_liters||"", d.sleep_hours||"", d.sleep_quality||"", d.bedtime||"", d.waketime||"", d.stress||"", d.mood||"", d.caff_after_2pm||"", d.late_meal||"", d.screen_evening||"", d.rhr||"", d.hrv||"", d.menstrual_phase||"", d.diet_tags||"", d.med_tags||"", d.supp_tags||"", d.sleep_score||"", d.created_at||""]; out.push(row.map(v=>`"${String(v)}"`).join(",")); } return out.join("\n"); }
+    function toCSVSymptoms(){ const syms=load(symptomKey); const headers=["date","export_id","name","severity","duration","tags","notes","created_at"]; const out=[headers.join(",")]; for(const s of syms){ const row=[s.date||"", s.export_id||"", (s.name||"").replace(/"/g,'""'), s.severity||"", s.duration||"", (s.tags||"").replace(/"/g,'""'), (s.notes||"").replace(/"/g,'""'), s.created_at||""].map(v=>`"${String(v)}"`).join(","); out.push(row); } return out.join("\n"); }
+    function toCSVScales(){ const arr=load(scalesKey); const headers=["date","export_id","name","payload_json","created_at"]; const out=[headers.join(",")]; for(const r of arr){ const payload = JSON.stringify(r.payload||{}).replace(/"/g,'""'); const row=[r.date||"", r.export_id||"", r.name||"", payload, r.created_at||""].map(v=>`"${String(v)}"`).join(","); out.push(row); } return out.join("\n"); }
     function download(filename, text){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type:'text/csv'})); a.download=filename; a.click(); URL.revokeObjectURL(a.href); }
-    async function syncToWebhook(){
-      const days=load(dayKey); const syms=load(symptomKey); const scales=load(scalesKey);
-      const webhook=$('webhook').value.trim(); const consent=$('consent').value;
-      if(!webhook){alert('Enter clinic webhook URL first.');return;}
-      if(consent!=='yes'){alert('Consent must be Yes to sync.');return;}
-      statusPill.textContent='Syncing…';
-      try{
-        const res=await fetch(webhook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({days, symptoms: syms, scales, exported_at:new Date().toISOString()})});
-        if(!res.ok) throw new Error('HTTP '+res.status);
-        statusPill.textContent='Synced'; statusPill.style.background='#e7f8ed';
-      }catch(err){ alert('Sync failed: '+err.message); statusPill.textContent='Local only'; statusPill.style.background=''; }
-    }
-    (function init(){
-      $('date').valueAsDate=new Date();
-      document.getElementById('addSymptomBtn').addEventListener('click', ()=>{
-        const s={name:$('symptom_name').value.trim(), severity:$('symptom_severity').value, duration:$('symptom_duration').value, tags:$('symptom_tags').value.trim(), notes:$('symptom_notes').value.trim()};
-        if(!s.name){ alert('Enter a symptom name.'); return; } todaySymptoms.push(s);
-        ['symptom_name','symptom_severity','symptom_duration','symptom_tags','symptom_notes'].forEach(id=>$(id).value=''); renderTokens();
-      });
-      document.getElementById('saveDayBtn').addEventListener('click', saveDay);
-      document.getElementById('newDayBtn').addEventListener('click', resetDayForm);
-      document.getElementById('exportDaysBtn').addEventListener('click', ()=>{settingsFromUI(); download('days.csv', toCSVDays());});
-      document.getElementById('exportSymptomsBtn').addEventListener('click', ()=>{settingsFromUI(); download('symptoms.csv', toCSVSymptoms());});
-      document.getElementById('exportScalesBtn').addEventListener('click', ()=>{settingsFromUI(); download('scales.csv', toCSVScales());});
-      document.getElementById('syncBtn').addEventListener('click', ()=>{settingsFromUI(); syncToWebhook();});
-      document.getElementById('clearLocalBtn').addEventListener('click', ()=>{ if(confirm('Delete all local entries on this device?')){ localStorage.removeItem(dayKey); localStorage.removeItem(symptomKey); localStorage.removeItem(scalesKey); renderEntries(); statusPill.textContent='Local only'; statusPill.style.background=''; } });
-      ['clinic_name','min_days','export_id'].forEach(id=>$(id).addEventListener('change', settingsFromUI));
-      applySettings(); renderEntries();
-      if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); }
-      renderTokens();
-    })();
+    document.addEventListener('click',(e)=>{ if(e.target && e.target.id==='savePSS4'){ const vals=[...document.querySelectorAll('.pss4')].map(x=>parseInt(x.value||'0')); const scored=[vals[0], 4-vals[1], 4-vals[2], vals[3]]; const total=scored.reduce((a,b)=>a+b,0); const arr=load(scalesKey); arr.push({ date:$('date').value, export_id:$('export_id').value.trim(), name:'PSS-4', payload:{items:vals, total}, created_at:new Date().toISOString() }); save(scalesKey, arr); alert('PSS-4 saved.'); } if(e.target && e.target.id==='savePHQ2'){ const vals=[...document.querySelectorAll('.phq2')].map(x=>parseInt(x.value||'0')); const total=vals.reduce((a,b)=>a+b,0); const arr=load(scalesKey); arr.push({ date:$('date').value, export_id:$('export_id').value.trim(), name:'PHQ-2', payload:{items:vals, total}, created_at:new Date().toISOString() }); save(scalesKey, arr); alert('PHQ-2 saved.'); } if(e.target && e.target.id==='savePEG3'){ const vals=[...document.querySelectorAll('.peg3')].map(x=>parseInt(x.value||'0')); const mean = vals.filter(v=>!isNaN(v)).reduce((a,b)=>a+b,0) / (vals.filter(v=>!isNaN(v)).length||1); const arr=load(scalesKey); arr.push({ date:$('date').value, export_id:$('export_id').value.trim(), name:'PEG-3', payload:{items:vals, mean}, created_at:new Date().toISOString() }); save(scalesKey, arr); alert('PEG-3 saved.'); } });
+    function init(){ $('date').valueAsDate=new Date(); document.getElementById('addSymptomBtn').addEventListener('click', addSymptom); document.getElementById('saveDayBtn').addEventListener('click', saveDay); document.getElementById('newDayBtn').addEventListener('click', resetDayForm); document.getElementById('exportDaysBtn').addEventListener('click', ()=>download('days.csv', toCSVDays())); document.getElementById('exportSymptomsBtn').addEventListener('click', ()=>download('symptoms.csv', toCSVSymptoms())); document.getElementById('exportScalesBtn').addEventListener('click', ()=>download('scales.csv', toCSVScales())); renderEntries(); renderTokens(); if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js'); } } init();
   </script>
 </body>
 </html>
